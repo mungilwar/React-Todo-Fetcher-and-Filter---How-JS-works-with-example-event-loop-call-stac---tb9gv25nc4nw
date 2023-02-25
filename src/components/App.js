@@ -8,7 +8,7 @@ const apiLink = 'https://jsonplaceholder.typicode.com/todos';
 
 const App = () => {
   const [complete, setComplete] = useState(true);
-  const [ischecked, setischecked] = useState(true);
+  const [ischecked, setIschecked] = useState(true);
   const [incomplete, setIncomplete] = useState(false);
   const [loading, setloading] = useState(true);
   const [post, setPost] = useState([]);
@@ -28,28 +28,25 @@ const App = () => {
   }, []);
 
   function handleChange(e) {
-    setComplete(!complete);
-    let word = e.target.value;
-    console.log(word);
-    setIncomplete(!incomplete);
-    setischecked(!ischecked);
+    const value = e.target.value;
+    const checked = e.target.checked;
 
-    if (word === 'completed') {
-      const filtered = post.filter((item) => item.completed === false);
-      setPost(filtered);
-    } else if (word === 'incompleted') {
-      const filtered = post.filter((item) => item.completed === true);
-      setPost(filtered);
-    }
-  }
-
-  function filterItem(filterType) {
-    if (filterType === 'Completed') {
-      const filtered = post.filter((item) => item.completed === true);
-      setGet(filtered);
-    } else if (filterType === 'Incomplete') {
-      const filtered = post.filter((item) => item.completed === false);
-      setGet(filtered);
+    if (value === 'completed') {
+      setIschecked(checked);
+      if (checked) {
+        const filtered = post.filter((item) => item.completed);
+        setGet(filtered);
+      } else {
+        setGet([]);
+      }
+    } else if (value === 'incomplete') {
+      setIncomplete(checked);
+      if (checked) {
+        const filtered = post.filter((item) => !item.completed);
+        setGet(filtered);
+      } else {
+        setGet([]);
+      }
     }
   }
 
@@ -70,6 +67,7 @@ const App = () => {
               completed={e.completed ? 'completed' : 'incomplete'}
             />
           ))}
+
           <br />
           <br />
           <div id="filter-holder">
