@@ -11,7 +11,7 @@ const App = () => {
   const [ischecked, setischecked] = useState(true);
   const [incomplete, setIncomplete] = useState(false);
   const [loading, setloading] = useState(true);
-  const [post, setpost] = useState([]);
+  const [post, setPost] = useState([]);
   const [get, setGet] = useState([]);
 
   useEffect(() => {
@@ -20,7 +20,7 @@ const App = () => {
       console.log(response);
       console.log(response.data);
 
-      setpost(response.data.slice(0, 20));
+      setPost(response.data.slice(0, 20));
       console.log(...post);
       setloading(false);
     }
@@ -36,10 +36,10 @@ const App = () => {
 
     if (word === 'completed') {
       const filtered = post.filter((item) => item.completed === false);
-      setpost(filtered);
+      setPost(filtered);
     } else if (word === 'incompleted') {
       const filtered = post.filter((item) => item.completed === true);
-      setpost(filtered);
+      setPost(filtered);
     }
   }
 
