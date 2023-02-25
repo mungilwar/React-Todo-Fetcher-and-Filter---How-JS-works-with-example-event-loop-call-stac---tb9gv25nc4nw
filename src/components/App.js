@@ -10,7 +10,7 @@ const App = () => {
   const [complete, setcomplete] = useState(true);
   const [ischecked, setischecked] = useState(true);
   const [incomplete, setincomplete] = useState(false);
-  const [loading, setloading] = useState(true); // set loading to true initially
+  const [loading, setloading] = useState(true);
   const [post, setpost] = useState([]);
   const [get, setGet] = useState([]);
 
@@ -20,24 +20,36 @@ const App = () => {
       console.log(response);
       console.log(response.data);
 
-      setpost(response.data.slice(0, 20)); // use slice instead of splice to get the first 20 todos
+      setpost(response.data.slice(0, 20));
       console.log(...post);
-      setloading(false); // set loading to false after data is fetched
+      setloading(false);
     }
     getStoredData();
   }, []);
 
   function handleChange(e) {
-    let word = e.target.value;
     setcomplete(!complete);
+    let word = e.target.value;
+    console.log(word);
     setincomplete(!incomplete);
+    setischecked(!ischecked);
 
     if (word === 'completed') {
-      const filtered = post.filter((item) => item.completed === false); // fix filter function to filter out completed tasks
+      const filtered = post.filter((item) => item.completed === false);
       setpost(filtered);
     } else if (word === 'incompleted') {
-      const filtered = post.filter((item) => item.completed === true); // filter out incomplete tasks
+      const filtered = post.filter((item) => item.completed === true);
       setpost(filtered);
+    }
+  }
+
+  function filterItem(filterType) {
+    if (filterType === 'Completed') {
+      const filtered = post.filter((item) => item.completed === true);
+      setGet(filtered);
+    } else if (filterType === 'Incomplete') {
+      const filtered = post.filter((item) => item.completed === false);
+      setGet(filtered);
     }
   }
 
@@ -50,16 +62,16 @@ const App = () => {
       )}
       {!loading && (
         <>
-          <ol>
-            {post.map((e) => (
-              <Todo
-                key={e.id}
-                id={`todo-${e.id}`}
-                title={e.title}
-                completed={e.completed}
-              />
-            ))}
-          </ol>
+          {post.map((e) => (
+            <Todo
+              key={e.id}
+              id={`todo-${e.id}`}
+              title={e.title}
+              completed={e.completed}
+            />
+          ))}
+          <br />
+          <br />
           <div id="filter-holder">
             <span>Show completed</span>
             <input
