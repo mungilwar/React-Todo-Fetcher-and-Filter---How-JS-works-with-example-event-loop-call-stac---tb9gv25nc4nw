@@ -7,9 +7,9 @@ import axios from 'axios';
 const apiLink = 'https://jsonplaceholder.typicode.com/todos';
 
 const App = () => {
-  const [complete, setcomplete] = useState(true);
+  const [complete, setComplete] = useState(true);
   const [ischecked, setischecked] = useState(true);
-  const [incomplete, setincomplete] = useState(false);
+  const [incomplete, setIncomplete] = useState(false);
   const [loading, setloading] = useState(true);
   const [post, setpost] = useState([]);
   const [get, setGet] = useState([]);
@@ -28,10 +28,10 @@ const App = () => {
   }, []);
 
   function handleChange(e) {
-    setcomplete(!complete);
+    setComplete(!complete);
     let word = e.target.value;
     console.log(word);
-    setincomplete(!incomplete);
+    setIncomplete(!incomplete);
     setischecked(!ischecked);
 
     if (word === 'completed') {
@@ -67,7 +67,7 @@ const App = () => {
               key={e.id}
               id={`todo-${e.id}`}
               title={e.title}
-              completed={e.completed}
+              completed={e.completed ? 'completed' : 'incomplete'}
             />
           ))}
           <br />
