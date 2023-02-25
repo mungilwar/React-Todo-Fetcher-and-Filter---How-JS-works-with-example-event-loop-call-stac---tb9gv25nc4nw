@@ -7,43 +7,38 @@ import axios from 'axios';
 const apiLink = 'https://jsonplaceholder.typicode.com/todos';
 
 const App = () => {
-  // const [complete, setcomplete] = useState(true);
+  const [complete, setcomplete] = useState(true);
   const [ischecked, setischecked] = useState(true);
   const [incomplete, setincomplete] = useState(false);
-  const [loading, setloading] = useState(false);
+  const [loading, setloading] = useState(true); // set loading to true initially
   const [post, setpost] = useState([]);
-  const [get, setget] = useState([]);
-  // let first;
+  const [get, setGet] = useState([]);
 
   useEffect(() => {
     async function getStoredData() {
       const response = await axios.get(apiLink);
       console.log(response);
-      // console.log(response.data);
+      console.log(response.data);
 
-      setpost(response.data.splice(0, 20));
-      // console.log(...post)
-      setloading(false);
-      // const timer = setTimeout(() => {<Loader />}, 1000);
-      //   return () => clearTimeout(timer);
+      setpost(response.data.slice(0, 20)); // use slice instead of splice to get the first 20 todos
+      console.log(...post);
+      setloading(false); // set loading to false after data is fetched
     }
     getStoredData();
   }, []);
 
   function handleChange(e) {
-    //  setcomplete(!complete);
-
     let word = e.target.value;
-
-    // console.log(word)
+    setcomplete(!complete);
     setincomplete(!incomplete);
-    setischecked(!ischecked);
 
-    // if(word === "completed"){
-    //   const filtered = post.filter(item => item==="false")
-    //   setpost(filtered)
-    //   console.log(word);
-    // }
+    if (word === 'completed') {
+      const filtered = post.filter((item) => item.completed === false); // fix filter function to filter out completed tasks
+      setpost(filtered);
+    } else if (word === 'incompleted') {
+      const filtered = post.filter((item) => item.completed === true); // filter out incomplete tasks
+      setpost(filtered);
+    }
   }
 
   return (
@@ -55,24 +50,16 @@ const App = () => {
       )}
       {!loading && (
         <>
-          {post.map((e) => (
-            <Todo
-              key={e.id}
-              title={e.title}
-              completed={e.completed ? 'completed' : 'incomplete'}
-              onChange={handleChange}
-              // toggleTaskCompleted = {toggleTaskCompleted}
-              // onClick = {() => filterItem ("Completed")}
-              // post = {getFilteredTodo()}
-            />
-          ))}
-
-          {/* {
-              post.filter(item => item.completed ? (setget) : (setget))
-            } */}
-          <br />
-          <br />
-          {/* <Todo id = {response.data[0].id}/> */}
+          <ol>
+            {post.map((e) => (
+              <Todo
+                key={e.id}
+                id={`todo-${e.id}`}
+                title={e.title}
+                completed={e.completed}
+              />
+            ))}
+          </ol>
           <div id="filter-holder">
             <span>Show completed</span>
             <input
@@ -87,7 +74,7 @@ const App = () => {
             <input
               type="checkbox"
               id="incompleted-checkbox"
-              // checked={incomplete}
+              checked={incomplete}
               value="incompleted"
               onChange={handleChange}
             />
@@ -97,4 +84,5 @@ const App = () => {
     </>
   );
 };
+
 export default App;
